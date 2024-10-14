@@ -39,7 +39,7 @@ def main():
     # Mlflow experiment configuration
     ###############################################################
     experiment_name = EXPERIMENT_NAME
-    mlflow.set_tracking_uri("http://10.8.33.50:5050")
+    mlflow.set_tracking_uri("http://10.8.33.50:8085")
     existing_exp = mlflow.get_experiment_by_name(experiment_name)
     if not existing_exp:
         mlflow.create_experiment(
@@ -49,6 +49,7 @@ def main():
     # mlflow_run_name = f"lr_{LEARNING_RATE}_dropout_{int(DROPOUT_RATE*10)}"
     with mlflow.start_run(
             experiment_id=experiment.experiment_id,
+            # log_system_metrics=True,
             # run_name=mlflow_run_name
     ) as run:
 
