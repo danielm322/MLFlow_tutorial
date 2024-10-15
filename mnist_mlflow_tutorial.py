@@ -46,11 +46,11 @@ def main():
             name=experiment_name,
         )
     experiment = mlflow.set_experiment(experiment_name=experiment_name)
-    # mlflow_run_name = f"lr_{LEARNING_RATE}_dropout_{int(DROPOUT_RATE*10)}"
+    mlflow_run_name = f"lr_{LEARNING_RATE}_dropout_{DROPOUT_RATE}"
     with mlflow.start_run(
             experiment_id=experiment.experiment_id,
             # log_system_metrics=True,
-            # run_name=mlflow_run_name
+            run_name=mlflow_run_name
     ) as run:
 
         # Log (hyper)-parameters to mlflow
@@ -78,7 +78,7 @@ def main():
         # ### Optionally save locally the trained model
         # path = './mnist.pth'
         # torch.save(model.state_dict(), path)
-        # TODO: Log model checkpoint with mlflow
+        # TODO: Log model checkpoint with mlflow (just uncomment the following lines)
         # inputs_sample, outputs_sample = get_model_signature(train_loader, model)
         # signature = mlflow.models.infer_signature(inputs_sample, outputs_sample)
         # mlflow.pytorch.log_model(model, "model", signature=signature)
@@ -90,7 +90,7 @@ def main():
 
         # Optionally log final metrics
         mlflow.log_metric("final_test_loss", test_loss, step=0)
-        # TODO: Optionally log final test accuracy metric
+        # TODO: Log final test accuracy metric
 
         mlflow.end_run()
 
@@ -157,7 +157,7 @@ class Net(nn.Module):
         x = F.relu(self.fc1(x))
         x = F.dropout(x, training=self.training)
         x = self.fc2(x)
-        return F.log_softmax(x)
+        return F.log_softmax(x, dim=1)
 
 
 def train_one_epoch(model, train_loader, val_loader, optimizer, loss_fn):
